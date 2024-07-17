@@ -1,0 +1,40 @@
+#[test(time_counter_tb)]
+embed (inline) sv{{{
+    `timescale 1ns/1ns
+    module time_counter_tb;
+        logic       i_clk, i_rst;
+        logic [4-1:0] o_my_counter;
+
+        sample_time_counter uut (i_clk, i_rst, o_my_counter);
+
+        always #1 i_clk = ~i_clk; 
+
+        initial begin
+            $dumpfile("waveform.vcd");
+            $dumpvars(0, tb_sample_time_counter);
+
+            // init
+            i_clk = 0;
+            i_rst = 0;
+            #10;
+
+            // リセットを解除してカウンター動作開始
+            i_rst = 1;
+            #100;
+
+            // リセットを再度有効化
+            i_rst = 0;
+            #10;
+            i_rst = 1;
+            #100;
+
+            // シミュレーション終了
+            $finish;
+        end
+
+        // モニタリング
+        initial begin
+            $monitor("Time: %0t | clk: %b | Reset: %b | Counter: %b", $time, i_clk, i_rst, o_my_counter);
+        end
+    endmodule
+}}}

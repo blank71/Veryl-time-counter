@@ -1,0 +1,39 @@
+version: '3'
+
+env:
+  EXE: sample
+  FILE: sample.f
+
+tasks:
+  fmt:
+    cmds:
+      - veryl fmt
+
+  test:
+    cmds:
+      - veryl test
+
+  test-verbose:
+    cmds:
+      - veryl test --verbose
+
+  clean:
+    cmds:
+      - rm obj_dir -rf
+      - rm target -rf
+
+  build:
+    deps: [fmt]
+    cmds:
+      - veryl build
+      - verilator --binary -f {{ .FILE }}
+        --trace --trace-params --trace-structs --trace-underscore
+    sources:
+      - src/*.veryl
+    method: timestamp
+
+  exec:
+    deps: [build]
+    cmds:
+      - ./obj_dir/{{ .EXE }}
+    
