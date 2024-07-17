@@ -1,4 +1,4 @@
-https://github.com/veryl-lang/veryl を動作させてみるプロジェクト。
+https://github.com/veryl-lang/veryl を動作させてみるプロジェクト。タイマーを作成する。
 
 [task](https://github.com/go-task/task) を利用する。下記のコマンドが利用できる。
 
